@@ -149,10 +149,12 @@ namespace Util
                 buffer = pageFilePath
             };
 
+            Console.WriteLine("Setting PageFile: {0} / {1} bytes for {2}", minimumValue, maximumValue, pageFilePath);
+
             Int32 resultNtCreatePagingFile = NativeMethods.NtCreatePagingFile(ref pageFileName, ref minimumValue, ref maximumValue, 0);
             if (resultNtCreatePagingFile != 0)
             {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
+                throw new Exception("NtCreatePagingFile failed with NTSTATUS 0x" + resultNtCreatePagingFile.ToString("X8"));
             }
 
             Console.WriteLine("PageFile: {0} / {1} bytes for {2}", minimumValue, maximumValue, pageFilePath);
